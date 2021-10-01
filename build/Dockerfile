@@ -1,4 +1,4 @@
-FROM golang:1.15.6-buster
+FROM golang:1.17.1-buster
 
 # Support Raspberry Pi 2 and newer
 ENV GOARM 7
@@ -49,6 +49,9 @@ RUN curl -fsSLo shfmt https://github.com/mvdan/sh/releases/download/v1.3.0/shfmt
 	mv shfmt /usr/bin
 
 # Install common Go tools
+RUN GO111MODULE=on go get github.com/hashicorp/hcl@v1.0.0; \
+       mkdir -p /go/src/github.com/hashicorp; \
+       ln -s $PWD/pkg/mod/github.com/hashicorp/hcl@v1.0.0 $PWD/src/github.com/hashicorp/hcl
 RUN go get \
     github.com/weaveworks/build-tools/cover \
     github.com/mattn/goveralls \
